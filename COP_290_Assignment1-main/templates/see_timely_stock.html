@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Analysis</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Stock Analysis</h1>
+    <form action="/see_timely" method="post" id="companyForm">
+        <label for="stockname">Select Stock:</label>
+        <select id="stockname" name="stockname">
+            <option value="SBIN">SBIN</option>
+            <option value="ITC">ITC</option>
+            <option value="ADANIPORTS">ADANIPORTS</option>
+        </select>
+
+        <label for="duration">Select Duration:</label>
+        <select id="duration" name="duration">
+            
+            <option value="1week">1 Week</option>
+            <option value="1month">1 Month</option>
+            <option value="1year">1 Year</option>
+            <option value="10years">10 Years</option>
+            <option value="alltime">All Time</option>
+        </select>
+	<label for="company">Select what parameter do you wanna see!!!:</label>
+        	<select id="parameter" name="parameter">
+        	    <option value="VALUE">VALUE</option>
+        	    <option value="VOLUME">VOLUME</option>
+        	    <option value="NO OF TRADES">NO OF TRADES</option>
+        	    <!-- Add more options as needed -->
+        	</select>
+        <div class="form-group">
+            <button type="submit">See Data</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
+
