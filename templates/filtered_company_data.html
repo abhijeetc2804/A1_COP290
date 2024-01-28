@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filtered Companies</title>
+</head>
+<body>
+    <h1>Filtered Companies</h1>
+    
+    {% for company in companies %}
+        <a href="{{ url_for('company_details', company_symbol=company) }}">
+            <button>{{ company }}</button>
+        </a>
+        <br>
+    {% endfor %}
+</body>
+</html>
+
