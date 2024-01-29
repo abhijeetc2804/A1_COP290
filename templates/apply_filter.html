@@ -1,68 +1,4 @@
-<!--<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apply Filters</title>
-    <script>
-        function toggleMinMaxFields() {
-            var closeCheckbox = document.getElementById('close');
-            var volumeCheckbox = document.getElementById('volume');
-            var closeMinMaxFields = document.getElementById('closeMinMaxFields');
-            var volumeMinMaxFields = document.getElementById('volumeMinMaxFields');
-
-            closeMinMaxFields.style.display = closeCheckbox.checked ? 'block' : 'none';
-            volumeMinMaxFields.style.display = volumeCheckbox.checked ? 'block' : 'none';
-        }
-    </script>
-</head>
-<body>
-    <h1>Apply Filters</h1>
-    
-    <form action="/apply_filter_to_table" method="post">
-        <div>
-            <input type="checkbox" id="close" name="parameter[]" value="close" onclick="toggleMinMaxFields()">
-            <label for="close">Close Price</label>
-        </div>
-
-        <div id="averageMinMaxFields" style="display:none;">
-            <label for="average_min_value">Average Min Value:</label>
-            <input type="number" id="avergae_min_value" name="average_min_value">
-
-            <label for="average_max_value">Avergae Max Value:</label>
-            <input type="number" id="average_max_value" name="avergae_max_value">
-        </div>
-
-        <div>
-            <input type="checkbox" id="volume" name="parameter[]" value="volume" onclick="toggleMinMaxFields()">
-            <label for="volume">Volume</label>
-        </div>
-
-        <div id="volumeMinMaxFields" style="display:none;">
-            <label for="volume_min_value">Volume Min Value:</label>
-            <input type="number" id="volume_min_value" name="volume_min_value">
-
-            <label for="volume_max_value">Volume Max Value:</label>
-            <input type="number" id="volume_max_value" name="volume_max_value">
-        </div>
-
-        <!-- Add more checkboxes as needed 
-
-        <br><br>
-
-        <label for="start_date">Start Date:</label>
-        <input type="date" id="start_date" name="start_date" required>
-
-        <label for="to_date">To Date:</label>
-        <input type="date" id="to_date" name="to_date" required>
-
-        <br><br>
-
-        <input type="submit" value="Apply Filters">
-    </form>
-</body>
-</html>-->
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -126,7 +62,6 @@
             <input type="number" id="pe_ratio_max_value" name="pe_ratio_max_value">
         </div>
 
-        <!-- Add more checkboxes as needed -->
 
         <br><br>
 
@@ -143,4 +78,141 @@
 </body>
 </html>
 
+ -->
 
+
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Apply Filters</title>
+     <style>
+         body {
+             font-family: 'Arial', sans-serif;
+             background-color: #f8f8f8;
+             text-align: center;
+             margin: 20px;
+         }
+ 
+         h1 {
+             color: #333;
+         }
+ 
+         form {
+             background-color: #fff;
+             border-radius: 8px;
+             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+             padding: 20px;
+             width: 300px;
+             margin: 50px auto;
+         }
+ 
+         div {
+             margin-bottom: 15px;
+         }
+ 
+         label {
+             display: inline-block;
+             margin-bottom: 5px;
+         }
+ 
+         input[type="checkbox"] {
+             margin-right: 5px;
+         }
+ 
+         input[type="number"],
+         input[type="date"],
+         input[type="submit"] {
+             width: 100%;
+             padding: 10px;
+             margin-bottom: 10px;
+             border: 1px solid #ccc;
+             border-radius: 5px;
+             box-sizing: border-box;
+         }
+ 
+         input[type="submit"] {
+             background-color: #4caf50;
+             color: #fff;
+             cursor: pointer;
+             transition: background-color 0.3s ease;
+         }
+ 
+         input[type="submit"]:hover {
+             background-color: #45a049;
+         }
+     </style>
+     <script>
+         function toggleMinMaxFields() {
+             var closeCheckbox = document.getElementById('close');
+             var volumeCheckbox = document.getElementById('volume');
+             var peRatioCheckbox = document.getElementById('pe_ratio');
+             var closeMinMaxFields = document.getElementById('closeMinMaxFields');
+             var volumeMinMaxFields = document.getElementById('volumeMinMaxFields');
+             var peRatioMinMaxFields = document.getElementById('peRatioMinMaxFields');
+ 
+             closeMinMaxFields.style.display = closeCheckbox.checked ? 'block' : 'none';
+             volumeMinMaxFields.style.display = volumeCheckbox.checked ? 'block' : 'none';
+             peRatioMinMaxFields.style.display = peRatioCheckbox.checked ? 'block' : 'none';
+         }
+     </script>
+ </head>
+ <body>
+     <h1>Apply Filters</h1>
+     
+     <form action="/apply_filter_to_table" method="post">
+         <div>
+             <input type="checkbox" id="close" name="parameter[]" value="close" onclick="toggleMinMaxFields()">
+             <label for="close">Close Price</label>
+         </div>
+ 
+         <div id="closeMinMaxFields" style="display:none;">
+             <label for="average_min_value">Close Min Value:</label>
+             <input type="number" id="average_min_value" name="average_min_value">
+ 
+             <label for="average_max_value">Close Max Value:</label>
+             <input type="number" id="average_max_value" name="average_max_value">
+         </div>
+ 
+         <div>
+             <input type="checkbox" id="volume" name="parameter[]" value="volume" onclick="toggleMinMaxFields()">
+             <label for="volume">Volume</label>
+         </div>
+ 
+         <div id="volumeMinMaxFields" style="display:none;">
+             <label for="volume_min_value">Volume Min Value:</label>
+             <input type="number" id="volume_min_value" name="volume_min_value">
+ 
+             <label for="volume_max_value">Volume Max Value:</label>
+             <input type="number" id="volume_max_value" name="volume_max_value">
+         </div>
+ 
+         <div>
+             <input type="checkbox" id="pe_ratio" name="parameter[]" value="pe_ratio" onclick="toggleMinMaxFields()">
+             <label for="pe_ratio">P/E Ratio</label>
+         </div>
+ 
+         <div id="peRatioMinMaxFields" style="display:none;">
+             <label for="pe_ratio_min_value">P/E Ratio Min Value:</label>
+             <input type="number" id="pe_ratio_min_value" name="pe_ratio_min_value">
+ 
+             <label for="pe_ratio_max_value">P/E Ratio Max Value:</label>
+             <input type="number" id="pe_ratio_max_value" name="pe_ratio_max_value">
+         </div>
+ 
+         <br><br>
+ 
+         <label for="start_date">Start Date:</label>
+         <input type="date" id="start_date" name="start_date" required>
+ 
+         <label for="to_date">To Date:</label>
+         <input type="date" id="to_date" name="to_date" required>
+ 
+         <br><br>
+ 
+         <input type="submit" value="Apply Filters">
+     </form>
+ </body>
+ </html>
+ 

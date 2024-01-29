@@ -20,166 +20,6 @@ import plotly.express as pex
 import plotly.offline as pyo
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-'''
-app = Flask(name)
-app.secret_key = 'your_secret_key'  # Replace with your actual secret key
-
-
-# Database Configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
-
-app.static_folder = 'static'
-
-# User Model
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), unique=True, nullable=False)
-    password_hash = db.Column(db.String(200), nullable=False)
-
-# Initialize Database within Application Context
-with app.app_context():
-    db.create_all()
-
-@app.route('/')
-def index():
-    return render_template('login.html')
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
-
-        new_user = User(username=username, password_hash=hashed_password)
-        db.session.add(new_user)
-        db.session.commit()
-
-        flash('Registration successful! Please login.')
-        return redirect(url_for('index'))
-
-    return render_template('register.html')
-
-@app.route('/login', methods=['POST'])
-def login():
-    username = request.form['username']
-    password = request.form['password']
-    user = User.query.filter_by(username=username).first()
-
-    if user and check_password_hash(user.password_hash, password):
-        session['user_id'] = user.id
-        session['username'] = user.username
-        return redirect(url_for('dashboard'))
-    else:
-        flash('Invalid username or password')
-        return redirect(url_for('index'))
-
-@app.route('/dashboard')
-def dashboard():
-    if 'user_id' in session:
-        return render_template('welcome.html', username=session['username'])
-    else:
-        return redirect(url_for('index'))
-
-@app.route('/logout')
-def logout():
-    session.pop('user_id', None)
-    session.pop('username', None)
-    return redirect(url_for('index'))
-
-
-
-####################################################################################
-#####################################################################################################
-####################################################################################
-
-
-
-
-
-
-
-
-
-
-
-
-@app.route('/stocks')
-def stocks():
-    return render_template('stocks.html')
-
-
-
-@app.route('/write_from_csv',methods=['POST'])
-
-def write_from_csv():
-    date_str=request.form['start_date']
-    start_year,start_month,start_date=map(int,date_str.split('-'))
-    #sym=request.form['sym']
-    selected_companies=request.form.getlist('sym')
-    date_str=request.form['to_date']
-    to_year,to_month,to_date=map(int,date_str.split('-'))
-#  print(start_date,start_month,start_year)
-#  print(to_date,to_month,to_year)
-    print(selected_companies)
-# executable(start_date,start_month,start_year,to_date,to_month,to_year,selected_companies[0])
-    # with open('stock_file.csv', newline='', encoding='utf-8') as csvfile:
-    #     reader = csv.DictReader(csvfile)
-    #     data = list(reader)
-    #fig = make_subplots(rows=1, cols=1)
-    for i in range(len(selected_companies)):
-        company=selected_companies[1-i]
-        executable(start_date,start_month,start_year,to_date,to_month,to_year,selected_companies[1-i])
-        csv_file_path = company+'.csv' 
-        df = pandas.read_csv(csv_file_path)
-        df['DATE'] = pandas.to_datetime(df['DATE'])
-        df = df.sort_values(by='DATE')
-#   print(df['DATE'])
-        x_column = 'DATE'
-        y_column = 'VALUE'
-        #fig = pex.line(df, x=x_column, y=y_column, title='CSV Data Plot')
-        trace = go.Scatter(x=df[x_column], y=df[y_column], mode='lines', name=company)
-        fig.add_trace(trace)
-#    plot_html = pyo.offline.plot(fig, output_type='div', include_plotlyjs=False, show_link=False)
-    
-    fig.update_layout(title='Stock Data',
-                    xaxis_title='Date',
-                    yaxis_title='Value',
-                    showlegend=True)
-    
-    
-    html_file_path = 'templates/output_plot.html' 
-    fig.write_html(html_file_path)
-
-
-
-    return render_template('output_plot.html')
-    
-    
-    
-def executable(start_date,start_month,start_year,to_date,to_month,to_year,sym):
-    start_date=int(start_date)
-    start_month=int(start_month)
-    start_year=int(start_year)
-    to_year=int(to_year)
-    to_month=int(to_month)
-    to_date=int(to_date)	
-    df = stock_df(symbol=sym, from_date=date(start_year,start_month,start_date),
-        to_date=date(to_year,to_month,to_date), series="EQ")
-    file_path_csv = sym+'.csv'
-    df.to_csv(file_path_csv, index=False)
-    print("hi")
-
-
-
-
-if name == 'main':
-    app.run(debug=True)
-    
-'''
-
 
 import pandas
 from datetime import date
@@ -481,19 +321,19 @@ def apply_filter_to_table():
     pe_ratio_max_value=0
     if 'close' in parameter:
     # Retrieve min and max values for Close Price
-    	average_min_value = int(request.form.get('average_min_value'))
-    	average_max_value = int(request.form.get('average_max_value'))
-   # print(average_min_value,average_max_value)
+        average_min_value = int(request.form.get('average_min_value'))
+        average_max_value = int(request.form.get('average_max_value'))
+# print(average_min_value,average_max_value)
     # Retrieve min and max values for Volume
     if 'volume' in parameter:
-    	volume_min_value = int(request.form.get('volume_min_value'))
-    	volume_max_value = int(request.form.get('volume_max_value'))
+        volume_min_value = int(request.form.get('volume_min_value'))
+        volume_max_value = int(request.form.get('volume_max_value'))
     
     if 'pe_ratio' in parameter:
-    	pe_ratio_min_value = float(request.form.get('pe_ratio_min_value'))
-    	pe_ratio_max_value = float(request.form.get('pe_ratio_max_value'))
+        pe_ratio_min_value = float(request.form.get('pe_ratio_min_value'))
+        pe_ratio_max_value = float(request.form.get('pe_ratio_max_value'))
     final_companies=[]
-  #  print(parameter,"hi")
+#  print(parameter,"hi")
     if 'close' in parameter:
         for company in filtered_companies:
             x=calculate_mean_stock_price(company, start_date, to_date)
@@ -502,7 +342,7 @@ def apply_filter_to_table():
                 final_companies.append(company)
         filtered_companies=[i for i in final_companies]
         final_companies=[]
-  #  print(filtered_companies," hi")
+#  print(filtered_companies," hi")
     if 'volume' in parameter:
         for company in filtered_companies:
             df = yf.download(company+'.NS', start=start_date, end=to_date)
@@ -521,8 +361,24 @@ def apply_filter_to_table():
     
     return render_template('filtered_company_data.html',companies=filtered_companies)
     
+@app.route('/get_company_details/<company_symbol>')
+def get_company_details(company_symbol):
+    company = yf.Ticker(company_symbol+'.NS')
+    history = company.history(period="1d")  # Fetch daily historical data
+
+    details = {
+        'Open': history['Open'].iloc[0],
+        'Close': history['Close'].iloc[0],
+        'High': history['High'].iloc[0],
+        'Low': history['Low'].iloc[0],
+        'Average': history['Close'].mean(),
+        'Volume': history['Volume'].iloc[0],
+    }
+
+    return details
     
-    
+
+
 @app.route('/company/<company_symbol>')
 def company_details(company_symbol):
         company = yf.Ticker(company_symbol+'.NS')
@@ -541,7 +397,7 @@ def company_details(company_symbol):
             'Volume': history['Volume'].iloc[0],
         }
         return render_template('company_data.html', details=details)
- 
+
 if __name__ == '__main__':
     app.run(debug=True)
 

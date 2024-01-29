@@ -1,4 +1,4 @@
-<!--<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,109 +10,14 @@
             text-align: center;
             margin: 20px;
             background-color: #f5f5f5;
+            /* Add background image */
+            background-image: url('/static/stock_trading_image3.png'); /* Update the path accordingly */
+            background-size: cover;
+            background-position: center;
         }
 
         .form-container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 300px;
-            margin: 50px auto;
-        }
-
-        h2 {
-            color: #333;
-        }
-
-        form {
-            margin-top: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        button {
-            background-color: #4caf50;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
-</head>
-<body>
-    <div class="form-container">
-        <h2>Stock Data</h2>
-        <form action="/write_from_csv" method="post" id ="companyForm">
-            <div class="form-group">
-                <label for="start_date">Start Date:</label>
-                <input type="date" name="start_date" required>
-            </div>
-            <div class="form-group">
-                <label for="to_date">To Date:</label>
-                <input type="date" name="to_date" required>
-            </div>
-            <div class="form-group">
-                <label for="sym">Select Company:</label>
-                <select name="sym" id="sym" multiple>
-                    <option value="" disabled selected>Select a company</option>
-                    <option value="SBIN">SBIN</option>
-                    <option value="HDFC">HDFC</option>
-                    /* Add more companies as needed */
-                </select>
-            </div>
-            <div class="form-group">
-                <button type="submit">See Data</button>
-            </div>
-        </form>
-        <script>
-        function submitForm() {
-            document.getElementById('companyForm').submit();
-        }
-    </script>
-    </div>
-</body>
-</html>-->
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stocks</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            text-align: center;
-            margin: 20px;
-            background-color: #f5f5f5;
-        }
-
-        .form-container {
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.8); /* Set background color with some transparency */
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
@@ -172,7 +77,7 @@
                 <label>Select Companies:</label><br>
                 <input type="checkbox" name="sym" value="SBIN"> SBIN<br>
                 <input type="checkbox" name="sym" value="ITC"> ITC<br>
-                <!-- Add more companies as needed -->
+             
             </div>
              <label for="company">Select what parameter do you wanna see!!!:</label>
         	<select id="parameter" name="parameter">
@@ -183,7 +88,7 @@
         	    <option value="Close">Close</option>
         	    <option value="Adj Close">Adj Close</option>
         	    
-        	    <!-- Add more options as needed -->
+        	   
         	</select>
             <div class="form-group">
                 <button type="button" onclick="submitForm()">See Data</button>
@@ -197,13 +102,561 @@
     </div>
 </body>
 </html>
-<!--['Date', 'Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume'], dtype='object')-->
+
+ -->
+
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stocks</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #f5f5f5;
+            /* Add background image */
+            background-image: url('/static/stock_trading_image3.png'); /* Update the path accordingly */
+            background-size: cover;
+            background-position: center;
+        }
+
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.8); /* Set background color with some transparency */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+            margin: 50px auto;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Stock Data</h2>
+        <form action="/write_from_csv" method="post" id="companyForm">
+            <div class="form-group">
+                <label for="start_date">Start Date:</label>
+                <input type="date" name="start_date" required>
+            </div>
+            <div class="form-group">
+                <label for="to_date">To Date:</label>
+                <input type="date" name="to_date" required>
+            </div>
+            <div class="form-group">
+                <label>Select Companies:</label><br>
+                <span><input type="checkbox" name="sym" value="SBIN"> SBIN</span>
+                <span><input type="checkbox" name="sym" value="ITC"> ITC</span>
+              
+            </div>
+             <label for="company">Select what parameter do you wanna see!!!:</label>
+        	<select id="parameter" name="parameter">
+        	    <option value="Open">Open</option>
+        	    <option value="Volume">Volume</option>
+        	    <option value="High">High</option>
+        	    <option value="Low">Low</option>
+        	    <option value="Close">Close</option>
+        	    <option value="Adj Close">Adj Close</option>
+        	    
+        	   
+        	</select>
+            <div class="form-group">
+                <button type="button" onclick="submitForm()">See Data</button>
+            </div>
+        </form>
+        <script>
+            function submitForm() {
+                document.getElementById('companyForm').submit();
+            }
+        </script>
+    </div>
+</body>
+</html> 
+-->
+
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stocks</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #f5f5f5;
+            background-image: url('/static/stock_trading_image3.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+            margin: 50px auto;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Custom dropdown style */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-label {
+            background-color: #fff; /* White background */
+            color: #4caf50; /* Green text color */
+            padding: 10px;
+            cursor: pointer;
+            display: block;
+            width: 200px; /* Adjust the width as needed */
+            border: 1px solid #4caf50; /* Green border */
+            border-radius: 5px; /* Rounded corners */
+            text-align: center; /* Center text */
+        }
+
+        .dropdown-list {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            max-height: 150px;
+            overflow-y: auto;
+            width: 200px; 
+            border: 1px solid #4caf50;
+            border-top: none;
+            border-radius: 0 0 5px 5px; 
+        }
+
+        .dropdown-option {
+            padding: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .dropdown-option input {
+            margin-right: 5px; 
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <h2>Stock Data</h2>
+        <form action="/write_from_csv" method="post" id="companyForm">
+            <div class="form-group">
+                <label for="start_date">Start Date:</label>
+                <input type="date" name="start_date" required>
+            </div>
+            <div class="form-group">
+                <label for="to_date">To Date:</label>
+                <input type="date" name="to_date" required>
+            </div>
+            <div class="form-group">
+                <label for="selected_company" class="dropdown">
+                    <div class="dropdown-label" onclick="toggleDropdown()">Select Companies</div>
+                    <div class="dropdown-list" id="checkboxDropdown">
+                        
+                        <label class="dropdown-option">
+                            <input type="checkbox" name="sym[]" value="SBIN" />
+                            SBIN
+                        </label>
+                        <label class="dropdown-option">
+                            <input type="checkbox" name="sym[]" value="ITC" />
+                            ITC
+                        </label>
+                    </div>
+                </label>
+            </div>
+            <label for="company">Select what parameter do you wanna see!!!:</label>
+            <select id="parameter" name="parameter">
+                <option value="Open">Open</option>
+                <option value="Volume">Volume</option>
+                <option value="High">High</option>
+                <option value="Low">Low</option>
+                <option value="Close">Close</option>
+                <option value="Adj Close">Adj Close</option>
+                
+            </select>
+            <div class="form-group">
+                <button type="button" onclick="submitForm()">See Data</button>
+            </div>
+        </form>
+        <script>
+            function toggleDropdown() {
+                var dropdownList = document.getElementById("checkboxDropdown");
+                dropdownList.style.display = (dropdownList.style.display === "none") ? "block" : "none";
+            }
+
+            function submitForm() {
+                document.getElementById('companyForm').submit();
+            }
+        </script>
+    </div>
+</body>
+
+</html> -->
 
 
 
 
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Selection</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+
+        .dropdown {
+            position: relative;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .dropdown-list {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            max-height: 150px;
+            overflow-y: auto;
+            width: 200px;
+            border: 1px solid #4caf50;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+        }
+
+        .dropdown-option {
+            padding: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .dropdown-option input {
+            margin-right: 5px;
+        }
+
+        .dropdown-label {
+            background-color: #fff;
+            color: #4caf50;
+            padding: 10px;
+            cursor: pointer;
+            display: block;
+            width: 200px;
+            border: 1px solid #4caf50;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .on .dropdown-list {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Company Selection</h1>
+
+    <div class="dropdown" data-control="checkbox-dropdown">
+        <label class="dropdown-label" onclick="toggleDropdown()">Select Companies</label>
+
+        <div class="dropdown-list" id="checkboxDropdown">
+            
+            <label class="dropdown-option">
+                <input type="checkbox" name="company[]" value="Company 1" />
+                Company 1
+            </label>
+            <label class="dropdown-option">
+                <input type="checkbox" name="company[]" value="Company 2" />
+                Company 2
+            </label>
+            <label class="dropdown-option">
+                <input type="checkbox" name="company[]" value="Company 3" />
+                Company 3
+            </label>
+           
+        </div>
+    </div>
+
+    <script>
+        function toggleDropdown() {
+            var dropdownList = document.getElementById("checkboxDropdown");
+            var dropdownLabel = document.querySelector(".dropdown-label");
+
+            if (dropdownList.style.display === "none" || dropdownList.style.display === "") {
+                dropdownList.style.display = "block";
+                dropdownLabel.classList.add("on");
+            } else {
+                dropdownList.style.display = "none";
+                dropdownLabel.classList.remove("on");
+            }
+        }
+    </script>
+</body>
+
+</html>
+  -->
 
 
+ <!DOCTYPE html>
+ <html lang="en">
+ 
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Stocks</title>
+     <style>
+         body {
+             font-family: 'Arial', sans-serif;
+             text-align: center;
+             margin: 20px;
+             background-color: #f5f5f5;
+             background-image: url('/static/stock_trading_image3.png');
+             background-size: cover;
+             background-position: center;
+         }
+ 
+         .form-container {
+             background-color: rgba(255, 255, 255, 0.8);
+             border-radius: 8px;
+             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+             padding: 20px;
+             width: 300px;
+             margin: 50px auto;
+         }
+ 
+         h2 {
+             color: #333;
+         }
+ 
+         form {
+             margin-top: 20px;
+         }
+ 
+         .form-group {
+             margin-bottom: 15px;
+         }
+ 
+         input,
+         select {
+             width: 100%;
+             padding: 10px;
+             margin-bottom: 10px;
+             border: 1px solid #ccc;
+             border-radius: 5px;
+             box-sizing: border-box;
+         }
+ 
+         button {
+             background-color: #4caf50;
+             color: #fff;
+             padding: 10px 20px;
+             border: none;
+             border-radius: 5px;
+             cursor: pointer;
+             transition: background-color 0.3s ease;
+         }
+ 
+         button:hover {
+             background-color: #45a049;
+         }
+ 
+         /* Custom dropdown style */
+         .dropdown {
+             position: relative;
+         }
+ 
+         .dropdown-label {
+             background-color: #fff; /* White background */
+             color: #4caf50; /* Green text color */
+             padding: 10px;
+             cursor: pointer;
+             display: block;
+             width: 200px; /* Adjust the width as needed */
+             border: 1px solid #4caf50; /* Green border */
+             border-radius: 5px; /* Rounded corners */
+             text-align: center; /* Center text */
+         }
+ 
+         .dropdown-list {
+             display: none;
+             position: absolute;
+             background-color: #fff;
+             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+             z-index: 1;
+             max-height: 150px;
+             overflow-y: auto;
+             width: 300px; 
+             border: 1px solid #4caf50;
+             border-top: none;
+             border-radius: 0 0 5px 5px; 
+         }
+ 
+         .dropdown-option {
+             padding: 10px;
+             display: flex;
+             align-items: center;
+         }
+ 
+         .dropdown-option input {
+             margin-right: 5px; 
+         }
+
+         .on .dropdown-list {
+            display: block;
+        }
+     </style>
+ </head>
+ 
+ <body>
+     <div class="form-container">
+         <h2>Stock Data</h2>
+         <form action="/write_from_csv" method="post" id="companyForm">
+             <div class="form-group">
+                 <label for="start_date">Start Date:</label>
+                 <input type="date" name="start_date" required>
+             </div>
+             <div class="form-group">
+                 <label for="to_date">To Date:</label>
+                 <input type="date" name="to_date" required>
+             </div>
 
 
+             
+            <div class="form-group">
+                <label for="selected_company" class="dropdown">
+                    <div class="dropdown-label" onclick="toggleDropdown()">Select Companies</div>
+                    <div class="dropdown-list" id="checkboxDropdown">
+                        <label class="dropdown-option">
+                            <input type="checkbox" name="sym[]" value="SBIN" />
+                            SBIN
+                        </label>
+                        <label class="dropdown-option">
+                            <input type="checkbox" name="sym[]" value="ITC" />
+                            ITC
+                        </label>
+                    </div>
+                </label>
+            </div>
 
+             <label for="company">Select what parameter do you wanna see!!!:</label>
+             <select id="parameter" name="parameter">
+                 <option value="Open">Open</option>
+                 <option value="Volume">Volume</option>
+                 <option value="High">High</option>
+                 <option value="Low">Low</option>
+                 <option value="Close">Close</option>
+                 <option value="Adj Close">Adj Close</option>
+                 
+             </select>
+             <div class="form-group">
+                 <button type="button" onclick="submitForm()">See Data</button>
+             </div>
+         </form>
+         <script>
+             function toggleDropdown() {
+                 var dropdownList = document.getElementById("checkboxDropdown");
+                 dropdownList.style.display = (dropdownList.style.display === "none") ? "block" : "none";
+             }
+ 
+             function submitForm() {
+                 document.getElementById('companyForm').submit();
+             }
+         </script>
+     </div>
+ </body>
+ 
+ </html> 

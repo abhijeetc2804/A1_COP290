@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -21,7 +21,57 @@
     <p><strong>Average:</strong> {{ details.Average }}</p>
     <p><strong>Volume:</strong> {{ details.Volume }}</p>
 
-    <!-- Add more details as needed -->
 </body>
 </html>
+ -->
 
+
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>{{ details.Name }} Details</title>
+     <style>
+         body {
+             font-family: Arial, sans-serif;
+             background-color: #f5f5f5;
+             margin: 20px;
+         }
+ 
+         h1 {
+             color: #333;
+             text-align: center;
+         }
+ 
+         p {
+             margin: 10px 0;
+         }
+ 
+         strong {
+             color: #4CAF50;
+         }
+ 
+         h2 {
+             color: #333;
+         }
+     </style>
+ </head>
+ <body>
+     <h1>{{ details.Name }} Details</h1>
+     
+     <p><strong>Symbol:</strong> {{ details.Symbol }}</p>
+     <p><strong>Description:</strong> {{ details.Description }}</p>
+     <p><strong>Industry:</strong> {{ details.Industry }}</p>
+     <p><strong>Sector:</strong> {{ details.Sector }}</p>
+ 
+     <h2>Financial Details</h2>
+     <p><strong>Open:</strong> {{ details.Open }}</p>
+     <p><strong>Close:</strong> {{ details.Close }}</p>
+     <p><strong>High:</strong> {{ details.High }}</p>
+     <p><strong>Low:</strong> {{ details.Low }}</p>
+     <p><strong>Average:</strong> {{ details.Average }}</p>
+     <p><strong>Volume:</strong> {{ details.Volume }}</p>
+ </body>
+ </html>
+ 
