@@ -388,20 +388,42 @@
         </div>
     </div>
 
+    <style>    
+        .bank-balance-form button.cancel {
+            padding: 10px 20px;
+            background-color: #dc3545; /* Red color for Cancel button */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-right: 20px; /* Increased margin to separate Cancel and Submit buttons */
+        }
+    
+        .bank-balance-form button.cancel:hover {
+            background-color: #c82333; /* Darker shade of red on hover */
+        }
+    </style>
+    
     <div class="bank-balance-form" id="bankBalanceForm">
         <form action="/submit_bank_balance" method="post">
             <label for="bankBalance">Enter Your Bank Balance:</label>
             <input type="text" id="bankBalance" name="bankBalance" required>
             <button type="submit">Submit</button>
+            <button type="button" class="cancel" onclick="closeBankBalanceForm()">Cancel</button>
         </form>
     </div>
-
+    
     <script>
         function toggleBankBalanceForm() {
             var bankBalanceForm = document.getElementById("bankBalanceForm");
             bankBalanceForm.style.display = (bankBalanceForm.style.display === "none") ? "block" : "none";
         }
+    
+        function closeBankBalanceForm() {
+            var bankBalanceForm = document.getElementById("bankBalanceForm");
+            bankBalanceForm.style.display = "none";
+        }
     </script>
-</body>
-
+    </body>
 </html>

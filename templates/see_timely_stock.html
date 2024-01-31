@@ -1,18 +1,20 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock Analysis</title>
+    <title>Stock Trends</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
+            background-image: url('/static/recent_trends.png'); 
+            background-size: cover; 
             margin: 0;
             padding: 20px;
+            opacity: 0.9;
             text-align: center;
         }
-
         .container {
             max-width: 600px;
             margin: 0 auto;
@@ -22,6 +24,13 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
+        h1 {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
         label {
             display: block;
             margin-bottom: 10px;
@@ -29,7 +38,7 @@
         }
 
         select {
-            width: 100%;
+            width: 65%;
             padding: 10px;
             margin-bottom: 20px;
             border: 1px solid #ccc;
@@ -53,37 +62,89 @@
         }
     </style>
 </head>
+
 <body>
 
 <div class="container">
-    <h1>Stock Analysis</h1>
+    <h1>Stock Trends</h1>
     <form action="/see_timely" method="post" id="companyForm">
         <label for="stockname">Select Stock:</label>
-        <select id="stockname" name="stockname">
-            <option value="SBIN">SBIN</option>
-            <option value="ITC">ITC</option>
+        <select id="stockname" name="stockname" multiple>
+            <option value="ADANIENT">ADANIENT</option>
             <option value="ADANIPORTS">ADANIPORTS</option>
+            <option value="APOLLOHOSP">APOLLOHOSP</option>
+            <option value="ASIANPAINT">ASIANPAINT</option>
+            <option value="AXISBANK">AXISBANK</option>
+            <option value="BAJAJ-AUTO">BAJAJ-AUTO</option>
+            <option value="BAJFINANCE">BAJFINANCE</option>
+            <option value="BAJAJFINSV">BAJAJFINSV</option>
+            <option value="BPCL">BPCL</option>
+            <option value="BHARTIARTL">BHARTIARTL</option>
+            <option value="BRITANNIA">BRITANNIA</option>
+            <option value="CIPLA">CIPLA</option>
+            <option value="COALINDIA">COALINDIA</option>
+            <option value="DIVISLAB">DIVISLAB</option>
+            <option value="DRREDDY">DRREDDY</option>
+            <option value="EICHERMOT">EICHERMOT</option>
+            <option value="GRASIM">GRASIM</option>
+            <option value="HCLTECH">HCLTECH</option>
+            <option value="HDFCBANK">HDFCBANK</option>
+            <option value="HDFCLIFE">HDFCLIFE</option>
+            <option value="HEROMOTOCO">HEROMOTOCO</option>
+            <option value="HINDALCO">HINDALCO</option>
+            <option value="HINDUNILVR">HINDUNILVR</option>
+            <option value="ICICIBANK">ICICIBANK</option>
+            <option value="ITC">ITC</option>
+            <option value="INDUSINDBK">INDUSINDBK</option>
+            <option value="INFY">INFY</option>
+            <option value="JSWSTEEL">JSWSTEEL</option>
+            <option value="KOTAKBANK">KOTAKBANK</option>
+            <option value="LTIM">LTIM</option>
+            <option value="LT">LT</option>
+            <option value="MARUTI">MARUTI</option>
+            <option value="NTPC">NTPC</option>
+            <option value="NESTLEIND">NESTLEIND</option>
+            <option value="ONGC">ONGC</option>
+            <option value="POWERGRID">POWERGRID</option>
+            <option value="RELIANCE">RELIANCE</option>
+            <option value="SBILIFE">SBILIFE</option>
+            <option value="SBIN">SBIN</option>
+            <option value="SUNPHARMA">SUNPHARMA</option>
+            <option value="TCS">TCS</option>
+            <option value="TATACONSUM">TATACONSUM</option>
+            <option value="TATAMOTORS">TATAMOTORS</option>
+            <option value="TATASTEEL">TATASTEEL</option>
+            <option value="TECHM">TECHM</option>
+            <option value="TITAN">TITAN</option>
+            <option value="UPL">UPL</option>
+            <option value="ULTRACEMCO">ULTRACEMCO</option>
+            <option value="WIPRO">WIPRO</option>  
         </select>
 
         <label for="duration">Select Duration:</label>
         <select id="duration" name="duration">
-            
             <option value="1week">1 Week</option>
             <option value="1month">1 Month</option>
             <option value="1year">1 Year</option>
             <option value="10years">10 Years</option>
             <option value="alltime">All Time</option>
         </select>
-	<label for="company">Select what parameter do you wanna see!!!:</label>
-        	<select id="parameter" name="parameter">
-        	   <option value="Open">Open</option>
-        	    <option value="Volume">Volume</option>
-        	    <option value="High">High</option>
-        	    <option value="Low">High</option>
-        	    <option value="Close">High</option>
-        	    <option value="Adj Close">High</option>
-        	    
-        	</select>
+        <label for="parameter">Select Parameter:</label>
+        <select id="parameter" name="parameter">
+            <option value="Open">Open</option>
+            <option value="Volume">Volume</option>
+            <option value="High">High</option>
+            <option value="Low">Low</option>
+            <option value="Close">Close</option>
+            <option value="Adj Close">Adj Close</option>
+        </select>
+
+        <label for="graphType">Select Type of Graph:</label>
+        <select id="graphType" name="graphType">
+            <option value="line">Line Graph</option>
+            <option value="candlestick">Candlestick Graph</option>
+        </select>
+
         <div class="form-group">
             <button type="submit">See Data</button>
         </div>
@@ -91,153 +152,5 @@
 </div>
 
 </body>
+
 </html>
- -->
-
-
- <!DOCTYPE html>
- <html lang="en">
- 
- <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Stock Analysis</title>
-     <style>
-         body {
-             font-family: 'Arial', sans-serif;
-             background-color: #f4f4f4;
-             margin: 0;
-             padding: 20px;
-             text-align: center;
-         }
- 
-         .container {
-             max-width: 600px;
-             margin: 0 auto;
-             background-color: #fff;
-             padding: 20px;
-             border-radius: 10px;
-             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-         }
- 
-         label {
-             display: block;
-             margin-bottom: 10px;
-             font-weight: bold;
-         }
- 
-         select {
-             width: 100%;
-             padding: 10px;
-             margin-bottom: 20px;
-             border: 1px solid #ccc;
-             border-radius: 5px;
-             box-sizing: border-box;
-             font-size: 16px;
-         }
- 
-         button {
-             padding: 10px 20px;
-             background-color: #007bff;
-             color: #fff;
-             border: none;
-             border-radius: 5px;
-             font-size: 16px;
-             cursor: pointer;
-         }
- 
-         button:hover {
-             background-color: #0056b3;
-         }
-     </style>
- </head>
- 
- <body>
- 
- <div class="container">
-     <h1>Stock Analysis</h1>
-     <form action="/see_timely" method="post" id="companyForm">
-         <label for="stockname">Select Stock:</label>
-         <select id="stockname" name="stockname">
-             <option value="ADANIENT">ADANIENT</option>
-             <option value="ADANIPORTS">ADANIPORTS</option>
-             <option value="APOLLOHOSP">APOLLOHOSP</option>
-             <option value="ASIANPAINT">ASIANPAINT</option>
-             <option value="AXISBANK">AXISBANK</option>
-             <option value="BAJAJ-AUTO">BAJAJ-AUTO</option>
-             <option value="BAJFINANCE">BAJFINANCE</option>
-             <option value="BAJAJFINSV">BAJAJFINSV</option>
-             <option value="BPCL">BPCL</option>
-             <option value="BHARTIARTL">BHARTIARTL</option>
-             <option value="BRITANNIA">BRITANNIA</option>
-             <option value="CIPLA">CIPLA</option>
-             <option value="COALINDIA">COALINDIA</option>
-             <option value="DIVISLAB">DIVISLAB</option>
-             <option value="DRREDDY">DRREDDY</option>
-             <option value="EICHERMOT">EICHERMOT</option>
-             <option value="GRASIM">GRASIM</option>
-             <option value="HCLTECH">HCLTECH</option>
-             <option value="HDFCBANK">HDFCBANK</option>
-             <option value="HDFCLIFE">HDFCLIFE</option>
-             <option value="HEROMOTOCO">HEROMOTOCO</option>
-             <option value="HINDALCO">HINDALCO</option>
-             <option value="HINDUNILVR">HINDUNILVR</option>
-             <option value="ICICIBANK">ICICIBANK</option>
-             <option value="ITC">ITC</option>
-             <option value="INDUSINDBK">INDUSINDBK</option>
-             <option value="INFY">INFY</option>
-             <option value="JSWSTEEL">JSWSTEEL</option>
-             <option value="KOTAKBANK">KOTAKBANK</option>
-             <option value="LTIM">LTIM</option>
-             <option value="LT">LT</option>
-             <option value="MARUTI">MARUTI</option>
-             <option value="NTPC">NTPC</option>
-             <option value="NESTLEIND">NESTLEIND</option>
-             <option value="ONGC">ONGC</option>
-             <option value="POWERGRID">POWERGRID</option>
-             <option value="RELIANCE">RELIANCE</option>
-             <option value="SBILIFE">SBILIFE</option>
-             <option value="SBIN">SBIN</option>
-             <option value="SUNPHARMA">SUNPHARMA</option>
-             <option value="TCS">TCS</option>
-             <option value="TATACONSUM">TATACONSUM</option>
-             <option value="TATAMOTORS">TATAMOTORS</option>
-             <option value="TATASTEEL">TATASTEEL</option>
-             <option value="TECHM">TECHM</option>
-             <option value="TITAN">TITAN</option>
-             <option value="UPL">UPL</option>
-             <option value="ULTRACEMCO">ULTRACEMCO</option>
-             <option value="WIPRO">WIPRO</option>
-         </select>
- 
-         <label for="duration">Select Duration:</label>
-         <select id="duration" name="duration">
-             <option value="1week">1 Week</option>
-             <option value="1month">1 Month</option>
-             <option value="1year">1 Year</option>
-             <option value="10years">10 Years</option>
-             <option value="alltime">All Time</option>
-         </select>
-         
-         <label for="parameter">Select Parameter:</label>
-         <select id="parameter" name="parameter">
-             <option value="Open">Open</option>
-             <option value="Volume">Volume</option>
-             <option value="High">High</option>
-             <option value="Low">Low</option>
-             <option value="Close">Close</option>
-             <option value="Adj Close">Adj Close</option>
-         </select>
- 
-         <div class="form-group">
-             <button type="submit">See Data</button>
-         </div>
-     </form>
- </div>
- 
- </body>
- 
- </html>
- 
- 
- 

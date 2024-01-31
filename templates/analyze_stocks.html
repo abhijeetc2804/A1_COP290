@@ -1,221 +1,5 @@
 <!-- <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stocks</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            text-align: center;
-            margin: 20px;
-            background-color: #f5f5f5;
-            /* Add background image */
-            background-image: url('/static/stock_trading_image3.png'); /* Update the path accordingly */
-            background-size: cover;
-            background-position: center;
-        }
-
-        .form-container {
-            background-color: rgba(255, 255, 255, 0.8); /* Set background color with some transparency */
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 300px;
-            margin: 50px auto;
-        }
-
-        h2 {
-            color: #333;
-        }
-
-        form {
-            margin-top: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        button {
-            background-color: #4caf50;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
-</head>
-<body>
-    <div class="form-container">
-        <h2>Stock Data</h2>
-        <form action="/write_from_csv" method="post" id="companyForm">
-            <div class="form-group">
-                <label for="start_date">Start Date:</label>
-                <input type="date" name="start_date" required>
-            </div>
-            <div class="form-group">
-                <label for="to_date">To Date:</label>
-                <input type="date" name="to_date" required>
-            </div>
-            <div class="form-group">
-                <label>Select Companies:</label><br>
-                <input type="checkbox" name="sym" value="SBIN"> SBIN<br>
-                <input type="checkbox" name="sym" value="ITC"> ITC<br>
-             
-            </div>
-             <label for="company">Select what parameter do you wanna see!!!:</label>
-        	<select id="parameter" name="parameter">
-        	    <option value="Open">Open</option>
-        	    <option value="Volume">Volume</option>
-        	    <option value="High">High</option>
-        	    <option value="Low">Low</option>
-        	    <option value="Close">Close</option>
-        	    <option value="Adj Close">Adj Close</option>
-        	    
-        	   
-        	</select>
-            <div class="form-group">
-                <button type="button" onclick="submitForm()">See Data</button>
-            </div>
-        </form>
-        <script>
-            function submitForm() {
-                document.getElementById('companyForm').submit();
-            }
-        </script>
-    </div>
-</body>
-</html>
-
- -->
-
-<!--
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stocks</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            text-align: center;
-            margin: 20px;
-            background-color: #f5f5f5;
-            /* Add background image */
-            background-image: url('/static/stock_trading_image3.png'); /* Update the path accordingly */
-            background-size: cover;
-            background-position: center;
-        }
-
-        .form-container {
-            background-color: rgba(255, 255, 255, 0.8); /* Set background color with some transparency */
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 300px;
-            margin: 50px auto;
-        }
-
-        h2 {
-            color: #333;
-        }
-
-        form {
-            margin-top: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        button {
-            background-color: #4caf50;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
-</head>
-<body>
-    <div class="form-container">
-        <h2>Stock Data</h2>
-        <form action="/write_from_csv" method="post" id="companyForm">
-            <div class="form-group">
-                <label for="start_date">Start Date:</label>
-                <input type="date" name="start_date" required>
-            </div>
-            <div class="form-group">
-                <label for="to_date">To Date:</label>
-                <input type="date" name="to_date" required>
-            </div>
-            <div class="form-group">
-                <label>Select Companies:</label><br>
-                <span><input type="checkbox" name="sym" value="SBIN"> SBIN</span>
-                <span><input type="checkbox" name="sym" value="ITC"> ITC</span>
-              
-            </div>
-             <label for="company">Select what parameter do you wanna see!!!:</label>
-        	<select id="parameter" name="parameter">
-        	    <option value="Open">Open</option>
-        	    <option value="Volume">Volume</option>
-        	    <option value="High">High</option>
-        	    <option value="Low">Low</option>
-        	    <option value="Close">Close</option>
-        	    <option value="Adj Close">Adj Close</option>
-        	    
-        	   
-        	</select>
-            <div class="form-group">
-                <button type="button" onclick="submitForm()">See Data</button>
-            </div>
-        </form>
-        <script>
-            function submitForm() {
-                document.getElementById('companyForm').submit();
-            }
-        </script>
-    </div>
-</body>
-</html> 
--->
-
-
-<!-- 
-<!DOCTYPE html>
-<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -302,10 +86,10 @@
             z-index: 1;
             max-height: 150px;
             overflow-y: auto;
-            width: 200px; 
+            width: 300px;
             border: 1px solid #4caf50;
             border-top: none;
-            border-radius: 0 0 5px 5px; 
+            border-radius: 0 0 5px 5px;
         }
 
         .dropdown-option {
@@ -315,7 +99,11 @@
         }
 
         .dropdown-option input {
-            margin-right: 5px; 
+            margin-right: 5px;
+        }
+
+        .on .dropdown-list {
+            display: block;
         }
     </style>
 </head>
@@ -332,23 +120,63 @@
                 <label for="to_date">To Date:</label>
                 <input type="date" name="to_date" required>
             </div>
+
             <div class="form-group">
-                <label for="selected_company" class="dropdown">
-                    <div class="dropdown-label" onclick="toggleDropdown()">Select Companies</div>
-                    <div class="dropdown-list" id="checkboxDropdown">
-                        
-                        <label class="dropdown-option">
-                            <input type="checkbox" name="sym[]" value="SBIN" />
-                            SBIN
-                        </label>
-                        <label class="dropdown-option">
-                            <input type="checkbox" name="sym[]" value="ITC" />
-                            ITC
-                        </label>
-                    </div>
-                </label>
+                <label for="selected_company">Select Companies:</label>
+                <select id="selected_company" name="sym" multiple>
+                    <option value="ADANIENT">ADANIENT</option>
+            <option value="ADANIPORTS">ADANIPORTS</option>
+            <option value="APOLLOHOSP">APOLLOHOSP</option>
+            <option value="ASIANPAINT">ASIANPAINT</option>
+            <option value="AXISBANK">AXISBANK</option>
+            <option value="BAJAJ-AUTO">BAJAJ-AUTO</option>
+            <option value="BAJFINANCE">BAJFINANCE</option>
+            <option value="BAJAJFINSV">BAJAJFINSV</option>
+            <option value="BPCL">BPCL</option>
+            <option value="BHARTIARTL">BHARTIARTL</option>
+            <option value="BRITANNIA">BRITANNIA</option>
+            <option value="CIPLA">CIPLA</option>
+            <option value="COALINDIA">COALINDIA</option>
+            <option value="DIVISLAB">DIVISLAB</option>
+            <option value="DRREDDY">DRREDDY</option>
+            <option value="EICHERMOT">EICHERMOT</option>
+            <option value="GRASIM">GRASIM</option>
+            <option value="HCLTECH">HCLTECH</option>
+            <option value="HDFCBANK">HDFCBANK</option>
+            <option value="HDFCLIFE">HDFCLIFE</option>
+            <option value="HEROMOTOCO">HEROMOTOCO</option>
+            <option value="HINDALCO">HINDALCO</option>
+            <option value="HINDUNILVR">HINDUNILVR</option>
+            <option value="ICICIBANK">ICICIBANK</option>
+            <option value="ITC">ITC</option>
+            <option value="INDUSINDBK">INDUSINDBK</option>
+            <option value="INFY">INFY</option>
+            <option value="JSWSTEEL">JSWSTEEL</option>
+            <option value="KOTAKBANK">KOTAKBANK</option>
+            <option value="LTIM">LTIM</option>
+            <option value="LT">LT</option>
+            <option value="MARUTI">MARUTI</option>
+            <option value="NTPC">NTPC</option>
+            <option value="NESTLEIND">NESTLEIND</option>
+            <option value="ONGC">ONGC</option>
+            <option value="POWERGRID">POWERGRID</option>
+            <option value="RELIANCE">RELIANCE</option>
+            <option value="SBILIFE">SBILIFE</option>
+            <option value="SBIN">SBIN</option>
+            <option value="SUNPHARMA">SUNPHARMA</option>
+            <option value="TCS">TCS</option>
+            <option value="TATACONSUM">TATACONSUM</option>
+            <option value="TATAMOTORS">TATAMOTORS</option>
+            <option value="TATASTEEL">TATASTEEL</option>
+            <option value="TECHM">TECHM</option>
+            <option value="TITAN">TITAN</option>
+            <option value="UPL">UPL</option>
+            <option value="ULTRACEMCO">ULTRACEMCO</option>
+            <option value="WIPRO">WIPRO</option>
+                </select>
             </div>
-            <label for="company">Select what parameter do you wanna see!!!:</label>
+
+            <label for="parameter">Select what parameter do you wanna see!!!:</label>
             <select id="parameter" name="parameter">
                 <option value="Open">Open</option>
                 <option value="Volume">Volume</option>
@@ -356,7 +184,6 @@
                 <option value="Low">Low</option>
                 <option value="Close">Close</option>
                 <option value="Adj Close">Adj Close</option>
-                
             </select>
             <div class="form-group">
                 <button type="button" onclick="submitForm()">See Data</button>
@@ -364,299 +191,233 @@
         </form>
         <script>
             function toggleDropdown() {
+                console.log("toggle called");
                 var dropdownList = document.getElementById("checkboxDropdown");
                 dropdownList.style.display = (dropdownList.style.display === "none") ? "block" : "none";
             }
 
             function submitForm() {
+                console.log("submitForm called");
+                var selectedCompanies = Array.from(document.getElementById('selected_company').selectedOptions).map(option => option.value);
+                console.log("Selected Companies:", selectedCompanies);
+                
+                console.log("Form submitted!");
                 document.getElementById('companyForm').submit();
             }
         </script>
     </div>
 </body>
-
 </html> -->
 
-
-
-
-<!-- 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Company Selection</title>
+    <title>Stocks</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
+       body {
             font-family: 'Arial', sans-serif;
+            font-weight: bold;
             text-align: center;
             margin: 20px;
+            background-color: #f5f5f5;
+            background-image: url('/static/stock_trading_image3.png');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.95;
         }
 
-        .dropdown {
-            position: relative;
-            font-size: 14px;
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+            margin: 50px auto;
+        }
+
+        h2 {
             color: #333;
+            font-weight: bold;
         }
 
-        .dropdown-list {
-            display: none;
-            position: absolute;
-            background-color: #fff;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-            max-height: 150px;
-            overflow-y: auto;
-            width: 200px;
-            border: 1px solid #4caf50;
-            border-top: none;
-            border-radius: 0 0 5px 5px;
-        }
-
-        .dropdown-option {
-            padding: 10px;
-            display: flex;
-            align-items: center;
-        }
-
-        .dropdown-option input {
-            margin-right: 5px;
-        }
-
-        .dropdown-label {
-            background-color: #fff;
-            color: #4caf50;
-            padding: 10px;
-            cursor: pointer;
-            display: block;
-            width: 200px;
-            border: 1px solid #4caf50;
+        .green-box {
+            background-color: #4caf50; /* Green background color */
+            color: #fff; /* White text color */
+            padding: 2px;
             border-radius: 5px;
-            text-align: center;
+            margin-bottom: 20px;
         }
 
-        .on .dropdown-list {
-            display: block;
+        form {
+            margin-top: 20px;
         }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .graph-type-container {
+            margin-top: 20px;
+        }
+
+        .graph-type-label {
+            color: #333;
+            margin-bottom: 10px;
+            display: block;
+            text-align: left;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .graph-type-dropdown {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
     </style>
 </head>
 
 <body>
-    <h1>Company Selection</h1>
-
-    <div class="dropdown" data-control="checkbox-dropdown">
-        <label class="dropdown-label" onclick="toggleDropdown()">Select Companies</label>
-
-        <div class="dropdown-list" id="checkboxDropdown">
-            
-            <label class="dropdown-option">
-                <input type="checkbox" name="company[]" value="Company 1" />
-                Company 1
-            </label>
-            <label class="dropdown-option">
-                <input type="checkbox" name="company[]" value="Company 2" />
-                Company 2
-            </label>
-            <label class="dropdown-option">
-                <input type="checkbox" name="company[]" value="Company 3" />
-                Company 3
-            </label>
-           
+    
+    <div class="form-container">
+        <div class="green-box">
+            <h2>Stock Data</h2>
         </div>
-    </div>
+        
+        <form action="/write_from_csv" method="post" id="companyForm">
+            <div class="form-group">
+                <label for="start_date">Start Date:</label>
+                <input type="date" name="start_date" required>
+            </div>
+            <div class="form-group">
+                <label for="to_date">To Date:</label>
+                <input type="date" name="to_date" required>
+            </div>
 
-    <script>
-        function toggleDropdown() {
-            var dropdownList = document.getElementById("checkboxDropdown");
-            var dropdownLabel = document.querySelector(".dropdown-label");
+            <div class="form-group">
+                <label for="selected_company">Select Companies:</label>
+                <select id="selected_company" name="sym" multiple>
+                    <option value="ADANIENT">ADANIENT</option>
+                    <option value="ADANIPORTS">ADANIPORTS</option>
+                    <option value="APOLLOHOSP">APOLLOHOSP</option>
+                    <option value="ASIANPAINT">ASIANPAINT</option>
+                    <option value="AXISBANK">AXISBANK</option>
+                    <option value="BAJAJ-AUTO">BAJAJ-AUTO</option>
+                    <option value="BAJFINANCE">BAJFINANCE</option>
+                    <option value="BAJAJFINSV">BAJAJFINSV</option>
+                    <option value="BPCL">BPCL</option>
+                    <option value="BHARTIARTL">BHARTIARTL</option>
+                    <option value="BRITANNIA">BRITANNIA</option>
+                    <option value="CIPLA">CIPLA</option>
+                    <option value="COALINDIA">COALINDIA</option>
+                    <option value="DIVISLAB">DIVISLAB</option>
+                    <option value="DRREDDY">DRREDDY</option>
+                    <option value="EICHERMOT">EICHERMOT</option>
+                    <option value="GRASIM">GRASIM</option>
+                    <option value="HCLTECH">HCLTECH</option>
+                    <option value="HDFCBANK">HDFCBANK</option>
+                    <option value="HDFCLIFE">HDFCLIFE</option>
+                    <option value="HEROMOTOCO">HEROMOTOCO</option>
+                    <option value="HINDALCO">HINDALCO</option>
+                    <option value="HINDUNILVR">HINDUNILVR</option>
+                    <option value="ICICIBANK">ICICIBANK</option>
+                    <option value="ITC">ITC</option>
+                    <option value="INDUSINDBK">INDUSINDBK</option>
+                    <option value="INFY">INFY</option>
+                    <option value="JSWSTEEL">JSWSTEEL</option>
+                    <option value="KOTAKBANK">KOTAKBANK</option>
+                    <option value="LTIM">LTIM</option>
+                    <option value="LT">LT</option>
+                    <option value="MARUTI">MARUTI</option>
+                    <option value="NTPC">NTPC</option>
+                    <option value="NESTLEIND">NESTLEIND</option>
+                    <option value="ONGC">ONGC</option>
+                    <option value="POWERGRID">POWERGRID</option>
+                    <option value="RELIANCE">RELIANCE</option>
+                    <option value="SBILIFE">SBILIFE</option>
+                    <option value="SBIN">SBIN</option>
+                    <option value="SUNPHARMA">SUNPHARMA</option>
+                    <option value="TCS">TCS</option>
+                    <option value="TATACONSUM">TATACONSUM</option>
+                    <option value="TATAMOTORS">TATAMOTORS</option>
+                    <option value="TATASTEEL">TATASTEEL</option>
+                    <option value="TECHM">TECHM</option>
+                    <option value="TITAN">TITAN</option>
+                    <option value="UPL">UPL</option>
+                    <option value="ULTRACEMCO">ULTRACEMCO</option>
+                    <option value="WIPRO">WIPRO</option>
+                </select>
+            </div>
 
-            if (dropdownList.style.display === "none" || dropdownList.style.display === "") {
-                dropdownList.style.display = "block";
-                dropdownLabel.classList.add("on");
-            } else {
-                dropdownList.style.display = "none";
-                dropdownLabel.classList.remove("on");
+            <label for="parameter">Select what parameter do you wanna see!!!:</label>
+            <select id="parameter" name="parameter">
+                <option value="Open">Open</option>
+                <option value="Volume">Volume</option>
+                <option value="High">High</option>
+                <option value="Low">Low</option>
+                <option value="Close">Close</option>
+                <option value="Adj Close">Adj Close</option>
+            </select>
+
+            <div class="graph-type-container">
+                <label class="graph-type-label" for="graphType">Select Type of Graph:</label>
+                <select class="graph-type-dropdown" id="graphType" name="graphType">
+                    <option value="line">Line Graph</option>
+                    <option value="candlestick">Candlestick Graph</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <button type="button" onclick="submitForm()">See Data</button>
+            </div>
+        </form>
+        <script>
+            function submitForm() {
+                var selectedCompanies = Array.from(document.getElementById('selected_company').selectedOptions).map(option => option.value);
+                console.log("Selected Companies:", selectedCompanies);
+
+                var selectedGraphType = document.getElementById('graphType').value;
+                console.log("Selected Graph Type:", selectedGraphType);
+
+                console.log("Form submitted!");
+                document.getElementById('companyForm').submit();
             }
-        }
-    </script>
+        </script>
+    </div>
 </body>
 
 </html>
-  -->
-
-
- <!DOCTYPE html>
- <html lang="en">
- 
- <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Stocks</title>
-     <style>
-         body {
-             font-family: 'Arial', sans-serif;
-             text-align: center;
-             margin: 20px;
-             background-color: #f5f5f5;
-             background-image: url('/static/stock_trading_image3.png');
-             background-size: cover;
-             background-position: center;
-         }
- 
-         .form-container {
-             background-color: rgba(255, 255, 255, 0.8);
-             border-radius: 8px;
-             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-             padding: 20px;
-             width: 300px;
-             margin: 50px auto;
-         }
- 
-         h2 {
-             color: #333;
-         }
- 
-         form {
-             margin-top: 20px;
-         }
- 
-         .form-group {
-             margin-bottom: 15px;
-         }
- 
-         input,
-         select {
-             width: 100%;
-             padding: 10px;
-             margin-bottom: 10px;
-             border: 1px solid #ccc;
-             border-radius: 5px;
-             box-sizing: border-box;
-         }
- 
-         button {
-             background-color: #4caf50;
-             color: #fff;
-             padding: 10px 20px;
-             border: none;
-             border-radius: 5px;
-             cursor: pointer;
-             transition: background-color 0.3s ease;
-         }
- 
-         button:hover {
-             background-color: #45a049;
-         }
- 
-         /* Custom dropdown style */
-         .dropdown {
-             position: relative;
-         }
- 
-         .dropdown-label {
-             background-color: #fff; /* White background */
-             color: #4caf50; /* Green text color */
-             padding: 10px;
-             cursor: pointer;
-             display: block;
-             width: 200px; /* Adjust the width as needed */
-             border: 1px solid #4caf50; /* Green border */
-             border-radius: 5px; /* Rounded corners */
-             text-align: center; /* Center text */
-         }
- 
-         .dropdown-list {
-             display: none;
-             position: absolute;
-             background-color: #fff;
-             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-             z-index: 1;
-             max-height: 150px;
-             overflow-y: auto;
-             width: 300px; 
-             border: 1px solid #4caf50;
-             border-top: none;
-             border-radius: 0 0 5px 5px; 
-         }
- 
-         .dropdown-option {
-             padding: 10px;
-             display: flex;
-             align-items: center;
-         }
- 
-         .dropdown-option input {
-             margin-right: 5px; 
-         }
-
-         .on .dropdown-list {
-            display: block;
-        }
-     </style>
- </head>
- 
- <body>
-     <div class="form-container">
-         <h2>Stock Data</h2>
-         <form action="/write_from_csv" method="post" id="companyForm">
-             <div class="form-group">
-                 <label for="start_date">Start Date:</label>
-                 <input type="date" name="start_date" required>
-             </div>
-             <div class="form-group">
-                 <label for="to_date">To Date:</label>
-                 <input type="date" name="to_date" required>
-             </div>
-
-
-             
-            <div class="form-group">
-                <label for="selected_company" class="dropdown">
-                    <div class="dropdown-label" onclick="toggleDropdown()">Select Companies</div>
-                    <div class="dropdown-list" id="checkboxDropdown">
-                        <label class="dropdown-option">
-                            <input type="checkbox" name="sym[]" value="SBIN" />
-                            SBIN
-                        </label>
-                        <label class="dropdown-option">
-                            <input type="checkbox" name="sym[]" value="ITC" />
-                            ITC
-                        </label>
-                    </div>
-                </label>
-            </div>
-
-             <label for="company">Select what parameter do you wanna see!!!:</label>
-             <select id="parameter" name="parameter">
-                 <option value="Open">Open</option>
-                 <option value="Volume">Volume</option>
-                 <option value="High">High</option>
-                 <option value="Low">Low</option>
-                 <option value="Close">Close</option>
-                 <option value="Adj Close">Adj Close</option>
-                 
-             </select>
-             <div class="form-group">
-                 <button type="button" onclick="submitForm()">See Data</button>
-             </div>
-         </form>
-         <script>
-             function toggleDropdown() {
-                 var dropdownList = document.getElementById("checkboxDropdown");
-                 dropdownList.style.display = (dropdownList.style.display === "none") ? "block" : "none";
-             }
- 
-             function submitForm() {
-                 document.getElementById('companyForm').submit();
-             }
-         </script>
-     </div>
- </body>
- 
- </html> 
