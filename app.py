@@ -4,7 +4,6 @@ from datetime import datetime, timedelta
 import pandas 
 import yfinance as yf
 import sys 
-from datetime import date
 import time
 import memory_profiler 
 from memory_profiler import profile 
@@ -20,14 +19,16 @@ import plotly.express as pex
 import plotly.offline as pyo
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-
 import pandas
 from datetime import date
 from flask import Flask, render_template, request, redirect, url_for, flash, session
-from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+from flask_login import UserMixin
+from flask_migrate import Migrate
+
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Replace with your actual secret key
@@ -37,14 +38,31 @@ app.secret_key = 'your_secret_key'  # Replace with your actual secret key
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 app.static_folder = 'static'
 
 # User Model
+# class User(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     username = db.Column(db.String(100), unique=True, nullable=False)
+#     password_hash = db.Column(db.String(200), nullable=False)
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), unique=True, nullable=False)
-    password_hash = db.Column(db.String(200), nullable=False)
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    password_hash = db.Column(db.String(256), nullable=False)
+    dob = db.Column(db.Date)  # Assuming date of birth is a Date field
+    country = db.Column(db.String(50))
+    profile_pic = db.Column(db.LargeBinary)  # Assuming profile_pic is a binary field
+
+    def __init__(self, username, password_hash, dob=None, country=None, profile_pic=None):
+        self.username = username
+        self.password_hash = password_hash
+        self.dob = datetime.strptime(dob, '%Y-%m-%d') if dob else None
+        self.country = country
+        self.profile_pic = profile_pic
+
 
 # Initialize Database within Application Context
 with app.app_context():
@@ -61,7 +79,20 @@ def register():
         password = request.form['password']
         hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
 
-        new_user = User(username=username, password_hash=hashed_password)
+        # Additional registration fields
+        dob = request.form['dob']
+        country = request.form['country']
+        profile_pic = request.files['profile_pic'] if 'profile_pic' in request.files else None
+
+        # Create a new user with additional information
+        new_user = User(
+            username=username,
+            password_hash=hashed_password,
+            dob=dob,
+            country=country,
+            profile_pic=profile_pic.read() if profile_pic else None
+        )
+
         db.session.add(new_user)
         db.session.commit()
 
@@ -69,6 +100,7 @@ def register():
         return redirect(url_for('index'))
 
     return render_template('register.html')
+
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -84,10 +116,109 @@ def login():
         flash('Invalid username or password')
         return redirect(url_for('index'))
 
+def get_user_info():
+    user = User.query.filter_by(username=session['username']).first()
+    if user:
+        user_info = {
+            'username': user.username,
+            'dob': user.dob,
+            'country': user.country,
+            'profile_pic_filename': user.profile_pic if user.profile_pic else 'user_avatar.png'
+        }
+        return user_info
+    else:
+        return None
+
+
+def get_stock_changes():
+    companies = [
+    "ADANIENT",
+    "ADANIPORTS",
+    "APOLLOHOSP",
+    "ASIANPAINT",
+    "AXISBANK",
+    "BAJAJ-AUTO",
+    "BAJFINANCE",
+    "BAJAJFINSV",
+    "BPCL",
+    "BHARTIARTL",
+    "BRITANNIA",
+    "CIPLA",
+    "COALINDIA",
+    "DIVISLAB",
+    "DRREDDY",
+    "EICHERMOT",
+    "GRASIM",
+    "HCLTECH",
+    "HDFCBANK",
+    "HDFCLIFE",
+    "HEROMOTOCO",
+    "HINDALCO",
+    "HINDUNILVR",
+    "ICICIBANK",
+    "ITC",
+    "INDUSINDBK",
+    "INFY",
+    "JSWSTEEL",
+    "KOTAKBANK",
+    "LTIM",
+    "LT",
+    "MARUTI",
+    "NTPC",
+    "NESTLEIND",
+    "ONGC",
+    "POWERGRID",
+    "RELIANCE",
+    "SBILIFE",
+    "SBIN",
+    "SUNPHARMA",
+    "TCS",
+    "TATACONSUM",
+    "TATAMOTORS",
+    "TATASTEEL",
+    "TECHM",
+    "TITAN",
+    "UPL",
+    "ULTRACEMCO",
+    "WIPRO"
+]   
+    changes = {}
+    for company in companies:
+        stock = yf.Ticker(f"{company}.NS")  # Replace with the actual stock symbol
+        week_data = stock.history(period='1wk')
+        if not week_data.empty:
+            today_change = week_data['Close'].pct_change().iloc[-1] * 100
+            changes[company] = round(today_change, 2)
+        else:
+            changes[company] = 0.0  # Handle the case when data is not available
+    print(changes)
+    return changes
+
+def get_top_gainers_losers(stock_changes):
+    top_gainers = dict(sorted(stock_changes.items(), key=lambda item: item[1], reverse=True)[:5])
+    top_losers = dict(sorted(stock_changes.items(), key=lambda item: item[1])[:5])
+    return top_gainers, top_losers
+
+@app.route('/welcome')
+def welcome():
+    if 'user_id' in session:
+        # Retrieve user information including profile picture filename
+        user_info = get_user_info()  # Implement a function to get user info from the database
+        stock_changes = get_stock_changes()
+        top_gainers, top_losers = get_top_gainers_losers(stock_changes)
+        return render_template('welcome.html', stock_changes=stock_changes, top_gainers=top_gainers, top_losers=top_losers, **user_info)
+    else:
+        return redirect(url_for('index'))
+
 @app.route('/dashboard')
 def dashboard():
-    if 'user_id' in session:
-        return render_template('welcome.html', username=session['username'])
+    if 'user_id' in session: 
+        user_info = get_user_info()   
+        stock_changes = get_stock_changes()
+        top_gainers, top_losers = get_top_gainers_losers(stock_changes)
+        print(top_gainers)
+        print(top_losers)
+        return render_template('welcome.html', stock_changes=stock_changes, top_gainers=top_gainers, top_losers=top_losers, **user_info)
     else:
         return redirect(url_for('index'))
 
@@ -358,26 +489,42 @@ def apply_filter_to_table():
                 final_companies.append(company)
         filtered_companies=[i for i in final_companies]
     print(filtered_companies)
-    
-    return render_template('filtered_company_data.html',companies=filtered_companies)
-    
-@app.route('/get_company_details/<company_symbol>')
-def get_company_details(company_symbol):
-    company = yf.Ticker(company_symbol+'.NS')
-    history = company.history(period="1d")  # Fetch daily historical data
+    details = {}
+    for company_symbol in filtered_companies:
+        company = yf.Ticker(company_symbol+'.NS')
+        history = company.history(period="1d")  # Fetch daily historical data
 
-    details = {
-        'Open': history['Open'].iloc[0],
-        'Close': history['Close'].iloc[0],
-        'High': history['High'].iloc[0],
-        'Low': history['Low'].iloc[0],
-        'Average': history['Close'].mean(),
-        'Volume': history['Volume'].iloc[0],
-    }
-
-    return details
+        details[company_symbol] = {
+            'Name': company.info.get('longName', ''),
+            'Symbol': company_symbol,
+            # 'Description': company.info.get('longBusinessSummary', 'No description available.'),
+            'Industry': company.info.get('industry', 'N/A'),
+            'Sector': company.info.get('sector', 'N/A'),
+            'Open': history['Open'].iloc[0],
+            'Close': history['Close'].iloc[0],
+            'High': history['High'].iloc[0],
+            'Low': history['Low'].iloc[0],
+            'Average': history['Close'].mean(),
+            'Volume': history['Volume'].iloc[0],
+        }
+    print(details)
+    return render_template('filtered_company_data.html',companies=filtered_companies,details=details)
     
+# @app.route('/get_company_details/<company_symbol>')
+# def get_company_details(company_symbol):
+#     company = yf.Ticker(company_symbol+'.NS')
+#     history = company.history(period="1d")  # Fetch daily historical data
+#     details = {
+#         'Open': history['Open'].iloc[0],
+#         'Close': history['Close'].iloc[0],
+#         'High': history['High'].iloc[0],
+#         'Low': history['Low'].iloc[0],
+#         'Average': history['Close'].mean(),
+#         'Volume': history['Volume'].iloc[0],
+#     }
 
+#     return details
+    
 
 @app.route('/company/<company_symbol>')
 def company_details(company_symbol):
@@ -397,6 +544,10 @@ def company_details(company_symbol):
             'Volume': history['Volume'].iloc[0],
         }
         return render_template('company_data.html', details=details)
+
+
+# ... (rest of your code)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
