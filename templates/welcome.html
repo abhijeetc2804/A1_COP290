@@ -1,5 +1,7 @@
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,15 +29,85 @@
             z-index: -1;
         }
 
+        .strip {
+            background-color: #3498db;
+            height: 60px;
+            width: 100%;
+            position: fixed;
+            top: 10px; /* Adjust the top position as needed */
+            z-index: 2; /* Ensure it's above other elements */
+        }
+
+        .ticker-strip {
+            background-color: #2ecc71; /* Adjust color as needed */
+            height: 50px;
+            width: 100%;
+            position: fixed;
+            top: 80px; /* Adjust the top position as needed */
+            z-index: 2; /* Ensure it's above other elements */
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .ticker-box {
+            display: inline-block;
+            padding: 5px;
+            margin-right: 10px; /* Adjust spacing between boxes */
+            background-color: #fff; /* Box background color */
+            border-radius: 5px; /* Box border-radius */
+            margin-top: -17.5px;
+        }
+
+        .ticker-content {
+            display: inline-block;
+        }
+
+        .user-info-btn {
+            cursor: pointer;
+            display: inline-block;
+            position: fixed;
+            top: 20px; /* Adjust the top position to align with the strip */
+            right: 50px;
+            background-color: #27ae60; /* Green color */
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 3; /* Ensure it's above other elements */
+        }
+
+        .dropdown-content {
+            display: none;
+            position: fixed;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+            z-index: 4; /* Ensure it's above other elements */
+            right: 10px;
+            top: 90px; /* Adjust the top position to appear below UserInfo button */
+            padding: 10px;
+            text-align: left;
+        }
+
+        .show {
+            display: block;
+        }
+
+        .dashboard-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
         .welcome-container {
-            position: relative;
+            position: absolute;
             z-index: 1;
             background-color: rgba(255, 255, 255, 1);
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
             width: 300px;
-            margin: 50px auto;
+            margin: 0 auto;
         }
 
         h1 {
@@ -61,8 +133,6 @@
 
         .logout-button {
             display: inline-block;
-            background-color: #e74c3c;
-            color: #ffffff;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
@@ -71,17 +141,212 @@
             text-decoration: none;
         }
 
+        .logout-button-green {
+            background-color: #27ae60; /* Green color */
+            color: #ffffff;
+        }
+
+        .logout-button-grey {
+            background-color: #555; /* Grey color */
+            color: #ffffff;
+        }
+
+        .logout-button-red {
+            background-color: #e74c3c; /* Red color */
+            color: #ffffff;
+        }
+
         .logout-button:hover {
-            background-color: #c0392b;
+            filter: brightness(85%);
+        }
+
+        /* Circular frame for profile picture */
+        .profile-pic-container {
+            width: 100px;
+            height: 100px;
+            overflow: hidden;
+            border-radius: 50%;
+            margin: 0 auto;
+        }
+
+        .profile-pic {
+            width: 100%;
+            height: auto;
+            border-radius: 50%;
+        }
+
+        /* Tables styles */
+        .gainers-table {
+            max-width: 400px;
+            margin-right: 400px; /* Adjust the margin to your preference */
+            display: inline-block;
+            vertical-align: top;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .losers-table {
+            max-width: 400px;
+            margin-left: 400px; /* Adjust the margin to your preference */
+            display: inline-block;
+            vertical-align: top;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px; /* Adjust padding for better spacing */
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Green background for gainers table */
+        .gainers-table {
+            background-color: #2ecc71;
+            color: #ffffff; /* White text for better contrast */
+        }
+
+        /* Red background for losers table */
+        .losers-table {
+            background-color: #e74c3c;
+            color: #ffffff; /* White text for better contrast */
         }
     </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Toggle dropdown content on UserInfo button click
+            $(".user-info-btn").click(function() {
+                $(".dropdown-content").toggleClass("show");
+            });
+
+            // Close dropdown content if clicked outside
+            $(document).click(function(event) {
+                if (!$(event.target).closest('.user-info-btn, .dropdown-content').length) {
+                    $(".dropdown-content").removeClass("show");
+                }
+            });
+        });
+    </script>
+
 </head>
 <body>
+    
+    <div class="strip"></div>
+    <div class="ticker-strip">
+        <div class="ticker-content">
+            <div class="ticker-box">
+                <marquee behavior="alternate" direction="left">
+                    {% for company, change in stock_changes.items() -%}
+                    <div class="logout-button logout-button-{{ 'green' if change > 0 else 'grey' if change == 0 else 'red' }}">{{ company }}: {{ change }}%</div>
+                    {% endfor -%}
+                </marquee>
+            </div>
+        </div>
+    </div>
+
+    <!--
+    <div class="gainers-table">
+        <h2>Top 5 Gainers of the Week</h2>
+        <table>
+            <tr>
+                <th>Company</th>
+                <th>Change</th>
+            </tr>
+            {% for company, change in top_gainers.items() -%}
+            <tr>
+                <td>{{ company }}</td>
+                <td>{{ change }}%</td>
+            </tr>
+            {% endfor -%}
+        </table>
+    </div>
+
+    
+    <div class="losers-table">
+        <h2>Top 5 Losers of the Week</h2>
+        <table>
+            <tr>
+                <th>Company</th>
+                <th>Change</th>
+            </tr>
+            {% for company, change in top_losers.items() -%}
+            <tr>
+                <td>{{ company }}</td>
+                <td>{{ change }}%</td>
+            </tr>
+            {% endfor -%}
+        </table>
+    </div> -->
+
+        <!-- Gainers Table -->
+    <div class="gainers-table">
+        <h2 style="color: #ffffff;">Top 5 Gainers of the Week</h2>
+        <table>
+            <tr>
+                <th style="background-color: #2ecc71;">Company</th>
+                <th style="background-color: #2ecc71;">Change</th>
+            </tr>
+            {% for company, change in top_gainers.items() -%}
+            <tr>
+                <td>{{ company }}</td>
+                <td>{{ change }}%</td>
+            </tr>
+            {% endfor -%}
+        </table>
+    </div>
+
+    <!-- Losers Table -->
+    <div class="losers-table">
+        <h2 style="color: #ffffff;">Top 5 Losers of the Week</h2>
+        <table>
+            <tr>
+                <th style="background-color: #e74c3c;">Company</th>
+                <th style="background-color: #e74c3c;">Change</th>
+            </tr>
+            {% for company, change in top_losers.items() -%}
+            <tr>
+                <td>{{ company }}</td>
+                <td>{{ change }}%</td>
+            </tr>
+            {% endfor -%}
+        </table>
+    </div>
+
+    
+    <div class="user-info-btn">UserInfo</div>
+    <div class="dropdown-content">
+        <div class="profile-pic-container">
+            <img src="{{ url_for('static', filename='user_avatar.png') }}" alt="Profile Picture" class="profile-pic">
+        </div>
+        
+        <p><strong>Username:</strong> {{ username }}</p>
+        <p><strong>DOB:</strong> {{ dob }}</p>
+        <p><strong>Country:</strong> {{ country }}</p>
+    </div>
+
     <div class="welcome-container">
         <h1>Welcome, {{ username }}!</h1>
         <p>This is your dashboard. Ready to explore stocks?</p>
         <p><strong>YES!!!!</strong> <a href="/option_page">Let's GOOOOO!!!</a></p>
-        <a href="/logout" class="logout-button">Logout</a>
+        <a href="/logout" class="logout-button logout-button-green">Logout</a>
     </div>
 </body>
 </html>

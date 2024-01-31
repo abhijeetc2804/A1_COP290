@@ -25,7 +25,6 @@
 </html>
  -->
 
-
  <!DOCTYPE html>
  <html lang="en">
  <head>
@@ -34,44 +33,98 @@
      <title>{{ details.Name }} Details</title>
      <style>
          body {
-             font-family: Arial, sans-serif;
-             background-color: #f5f5f5;
+             font-family: 'Arial', sans-serif;
+             background-color: #f8f8f8;
              margin: 20px;
+             padding: 20px;
+             border: 1px solid #ddd;
+             border-radius: 5px;
+             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
          }
  
          h1 {
              color: #333;
              text-align: center;
+             margin-bottom: 20px;
          }
  
-         p {
-             margin: 10px 0;
+         table {
+             width: 100%;
+             border-collapse: collapse;
+             margin-top: 20px;
          }
  
-         strong {
-             color: #4CAF50;
+         th, td {
+             padding: 10px;
+             text-align: left;
+             border-bottom: 1px solid #ddd;
          }
  
-         h2 {
-             color: #333;
+         th {
+             background-color: #4CAF50;
+             color: white;
          }
      </style>
  </head>
  <body>
      <h1>{{ details.Name }} Details</h1>
      
-     <p><strong>Symbol:</strong> {{ details.Symbol }}</p>
-     <p><strong>Description:</strong> {{ details.Description }}</p>
-     <p><strong>Industry:</strong> {{ details.Industry }}</p>
-     <p><strong>Sector:</strong> {{ details.Sector }}</p>
+     <table>
+         <tr>
+             <th>Attribute</th>
+             <th>Value</th>
+         </tr>
+         <tr>
+             <td><strong>Symbol:</strong></td>
+             <td>{{ details.Symbol }}</td>
+         </tr>
+         <tr>
+             <td><strong>Description:</strong></td>
+             <td>{{ details.Description }}</td>
+         </tr>
+         <tr>
+             <td><strong>Industry:</strong></td>
+             <td>{{ details.Industry }}</td>
+         </tr>
+         <tr>
+             <td><strong>Sector:</strong></td>
+             <td>{{ details.Sector }}</td>
+         </tr>
+     </table>
  
      <h2>Financial Details</h2>
-     <p><strong>Open:</strong> {{ details.Open }}</p>
-     <p><strong>Close:</strong> {{ details.Close }}</p>
-     <p><strong>High:</strong> {{ details.High }}</p>
-     <p><strong>Low:</strong> {{ details.Low }}</p>
-     <p><strong>Average:</strong> {{ details.Average }}</p>
-     <p><strong>Volume:</strong> {{ details.Volume }}</p>
+     
+     <table>
+         <tr>
+             <th>Financial Attribute</th>
+             <th>Value</th>
+         </tr>
+         <tr>
+             <td><strong>Open:</strong></td>
+             <td>{{ details.Open }}</td>
+         </tr>
+         <tr>
+             <td><strong>Close:</strong></td>
+             <td>{{ details.Close }}</td>
+         </tr>
+         <tr>
+             <td><strong>High:</strong></td>
+             <td>{{ details.High }}</td>
+         </tr>
+         <tr>
+             <td><strong>Low:</strong></td>
+             <td>{{ details.Low }}</td>
+         </tr>
+         <tr>
+             <td><strong>Average:</strong></td>
+             <td>{{ details.Average }}</td>
+         </tr>
+         <tr>
+             <td><strong>Volume:</strong></td>
+             <td>{{ details.Volume }}</td>
+         </tr>
+     </table>
  </body>
  </html>
+ 
  

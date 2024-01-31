@@ -27,15 +27,32 @@
             z-index: -1;
         }
 
+        .logo-container {
+            position: absolute;
+            top: 30px;
+            left: 50%; /* Center horizontally */
+            transform: translateX(-50%); /* Center horizontally */
+            margin-top: 0px;
+        }
+
+        .logo {
+            width: 200px; /* Adjust the width as needed */
+            height: 20 px;
+            border-radius: 10px;
+        }
+
         .form-container {
-            position: relative;
+            position: absolute;
             z-index: 1;
-            background-color: rgba(255, 255, 255, 0.8);
+            top: 150px;
+            left: 50%; /* Center horizontally */
+            transform: translateX(-50%); /* Center horizontally */
+            background-color: rgba(255, 255, 255, 0.9);
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
             width: 300px;
-            margin: 50px auto;
+            margin: 0 auto; /* Adjust the margin to shift the box down */
         }
 
         h2 {
@@ -84,6 +101,11 @@
     </style>
 </head>
 <body>
+    <!-- Logo -->
+    <div class="logo-container">
+        <img src="{{ url_for('static', filename='logo2.png') }}" alt="Logo" class="logo">
+    </div>
+
     <div class="form-container">
         <h2>Register</h2>
         <form action="/register" method="post">
@@ -92,6 +114,18 @@
             </div>
             <div class="form-group">
                 <input type="password" name="password" placeholder="Password" required>
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob" name="dob" required>
+            </div>
+            <div class="form-group">
+                <label for="country">Country</label>
+                <input type="text" id="country" name="country" placeholder="Country" required>
+            </div>
+            <div class="form-group">
+                <label for="profile-pic">Profile Picture (optional)</label>
+                <input type="file" id="profile-pic" name="profile_pic" accept="image/*">
             </div>
             <div class="form-group">
                 <button type="submit">Register</button>
