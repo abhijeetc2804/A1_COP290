@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy/sell Stocks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 20px;
+            background-image: url('/static/stock_trading_image4.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        h1 {
+            color: #fff;
+            text-align: center;
+            background-color: #333;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+	h2 {
+            background-color: #28a745; /* Green color */
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: white;
+            opacity: 0.9;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        .company-link {
+            text-decoration: none;
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .company-link:hover {
+            background-color: #45a049;
+        }
+
+        .input-field {
+            width: 60px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .submit-button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Bank Balance Section -->
+    <h2>Bank Balance:  ₹ {{ bank_balance }}</h2>
+
+    <!-- Companies Above Table -->
+    <h1>Portfolio</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Company</th>
+            <th>No. of Stocks</th>
+            <th>total_stock_value</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for company in companies_above %}
+        <tr>
+            <td>{{ details[company]['Name'] }}</td>
+            <td>{{ companies_above[company][0] }}</td>
+            <td>{{ companies_above[company][1] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+    <!-- Filtered Companies Table (Companies Below) -->
+    <h1>Buy/Sell Stocks</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Company</th>
+                <th>Symbol</th>
+                <th>Industry</th>
+                <th>Sector</th>
+                <th>Close</th>
+                <th>Buy</th>
+                <th>Sell</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for company in companies_below %}
+            <tr>
+                <td>
+                    <a class="company-link" href="{{ url_for('company_details', company_symbol=company) }}">
+                        {{ details[company]['Name'] }}
+                    </a>
+                </td>
+                <td>{{ details[company]['Symbol'] }}</td>
+                <td>{{ details[company]['Industry'] }}</td>
+                <td>{{ details[company]['Sector'] }}</td>
+                <td>{{ details[company]['Close']|round(3) }}</td>
+                <form action="/transaction_update" method="post" id="companyForm">
+                    <input type="hidden" name="company_symbol" value="{{ company }}">
+                    <td>
+                        <input class="input-field" type="number" name="buy_value" value="0"/>
+                    </td>
+                    <td>
+                        <input class="input-field" type="number" name="sell_value" value="0"/>
+                    </td>
+                    <td>
+                        <button type="submit" class="submit-button">Submit</button>
+                    </td>
+                </form>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var inputFields = document.querySelectorAll('.input-field');
+
+            inputFields.forEach(function (inputField) {
+                inputField.addEventListener('keypress', function (event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        var form = inputField.closest('form');
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
+
