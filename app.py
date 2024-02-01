@@ -55,15 +55,61 @@ class User(db.Model):
     dob = db.Column(db.Date)  # Assuming date of birth is a Date field
     country = db.Column(db.String(50))
     profile_pic = db.Column(db.LargeBinary)  # Assuming profile_pic is a binary field
-
-    def __init__(self, username, password_hash, dob=None, country=None, profile_pic=None):
+    stock_company_list = db.Column(db.String)  # For simplicity, using a string here
+    account_balance = db.Column(db.Integer, default=0, nullable=True)
+    def __init__(self, username, password_hash, dob=None, country=None, profile_pic=None,account_balance=0, stock_company_list=None):
         self.username = username
         self.password_hash = password_hash
         self.dob = datetime.strptime(dob, '%Y-%m-%d') if dob else None
         self.country = country
         self.profile_pic = profile_pic
-
-
+        self.stock_company_list = "dummy_company,0"
+    def update_balance(self,amount):
+        self.account_balance=amount
+        db.session.commit()
+        return True 
+    def buy_some_stock(self,company_name,amount,price):
+      if self.account_balance<amount*price :
+        return False
+      else:	
+          print(self.stock_company_list)
+          stock_list = [tuple(map(str, item.split(','))) for item in self.stock_company_list.split(';') if item]
+          for i in range(len(stock_list)):
+            e=stock_list[i]
+            if e[0]==company_name:
+              x=float(e[1])
+              print(x,amount)
+              x+=amount 
+              print(x,amount)
+              stock_list[i]=(company_name,str(x))
+              self.account_balance-=amount*price
+              self.stock_company_list = ';'.join([','.join(map(str, item)) for item in stock_list])
+              db.session.commit()
+              return True
+          stock_list.append((company_name, str(amount)))
+          self.account_balance-=amount*price
+          self.stock_company_list = ';'.join([','.join(map(str, item)) for item in stock_list])
+          db.session.commit() 
+          return True
+    def sell_some_stock(self,company_name,amount,price):
+      stock_list = [tuple(map(str, item.split(','))) for item in self.stock_company_list.split(';') if item]
+      for i  in range(len(stock_list)):
+        e=stock_list[i]
+        if e[0]==company_name:
+          x=float(e[1])
+          if x<amount:
+            return False
+          print(x,amount)
+          x-=amount 
+          stock_list[i]=(company_name,str(x))
+          print(x,amount)
+          if float(x)<=0:
+            stock_list.remove((company_name,str(x)))
+          self.account_balance+=amount*price
+          self.stock_company_list = ';'.join([','.join(map(str, item)) for item in stock_list])
+          db.session.commit()
+          return True
+      return False	
 # Initialize Database within Application Context
 with app.app_context():
     db.create_all()
@@ -216,8 +262,6 @@ def dashboard():
         user_info = get_user_info()   
         stock_changes = get_stock_changes()
         top_gainers, top_losers = get_top_gainers_losers(stock_changes)
-        print(top_gainers)
-        print(top_losers)
         return render_template('welcome.html', stock_changes=stock_changes, top_gainers=top_gainers, top_losers=top_losers, **user_info)
     else:
         return redirect(url_for('index'))
@@ -232,6 +276,7 @@ def option_page():
     return render_template('option_page.html')
 @app.route('/analyze_stocks')
 def analyze_stocks():
+    print("Hi233")
     return render_template('analyze_stocks.html')
 @app.route('/see_timely_stock')
 def see_timely_stock():
@@ -239,42 +284,47 @@ def see_timely_stock():
 @app.route('/apply_filter')
 def apply_filter():
     return render_template('apply_filter.html')
+
 @app.route('/write_from_csv', methods=['POST'])
 def write_from_csv():
-    parameter =request.form['parameter']
-    date_str = request.form['start_date']
-    start_date=date_str
     selected_companies = request.form.getlist('sym')
+    parameter = request.form['parameter']
+    date_str = request.form['start_date']
+    start_date = date_str
     date_str = request.form['to_date']
-    to_date=date_str
-    print(start_date,to_date)
+    to_date = date_str
+    graph_type = request.form['graphType']  # Add this line to get the selected graph type
+
     # Create a subplot
     fig = make_subplots(rows=1, cols=1)
 
     for i in range(len(selected_companies)):
         company = selected_companies[i]
-        executable(start_date, to_date, selected_companies[i]+".NS")
+        executable(start_date, to_date, selected_companies[i] + ".NS")
         csv_file_path = company + '.NS.csv'
         df = pandas.read_csv(csv_file_path)
 
-    # Print the column names
+        # Print the column names
         print(f"Column names for {company}: {df.columns}")
 
-    # Convert the 'DATE' column to datetime
+        # Convert the 'DATE' column to datetime
         df['Date'] = pandas.to_datetime(df['Date'])
         df = df.sort_values(by='Date')
 
         x_column = 'Date'
         y_column = parameter
 
-        trace = go.Scatter(x=df[x_column], y=df[y_column], mode='lines', name=company)
+        if graph_type == 'line':
+            trace = go.Scatter(x=df[x_column], y=df[y_column], mode='lines', name=company)
+        elif graph_type == 'candlestick':
+            trace = go.Candlestick(x=df[x_column], open=df['Open'], high=df['High'], low=df['Low'], close=df['Close'],
+                                   name=company)
+
         fig.add_trace(trace)
-
-
     fig.update_layout(title='Stock Data',
-                    xaxis_title='Date',
-                    yaxis_title=parameter,
-                    showlegend=True)
+                      xaxis_title='Date',
+                      yaxis_title=parameter,
+                      showlegend=True)
 
     html_file_path = 'templates/output_plot.html'
     fig.write_html(html_file_path)
@@ -282,7 +332,9 @@ def write_from_csv():
     return render_template('output_plot.html')
 
 def executable(start_date,to_date, sym):
+    print("Hi286")
     try:
+        print("Hi283\n")
         # Download stock data
         df = yf.download(sym, start=start_date, end=to_date)
 
@@ -292,58 +344,75 @@ def executable(start_date,to_date, sym):
         # Save data to CSV
         file_path_csv = sym + '.csv'
         df.to_csv(file_path_csv, index=False)
-
         print(f"Data downloaded and saved for {sym}")
     except Exception as e:
         print(f"Error downloading data for {sym}: {e}")
 
 
 lt=["1day","1week","1month","1year","10years","alltime"]
-@app.route('/see_timely',methods=['POST'])
+lt = ["1day", "1week", "1month", "1year", "10years", "alltime"]
+
+@app.route('/see_timely', methods=['POST'])
 def see_timely():
     selected_companies = request.form.getlist('stockname')
-    duration =request.form['duration']
-    day_today=date.today()
-    to_date =day_today
-    
-    parameter =request.form['parameter']
-    days_ago=day_today
-    if duration ==lt[0]:
+    duration = request.form['duration']
+    day_today = date.today()
+    to_date = day_today
+    parameter = request.form['parameter']
+    days_ago = day_today
+
+    if duration == lt[0]:
         days_ago = day_today - timedelta(days=1)
-    elif duration==lt[1]:
+    elif duration == lt[1]:
         days_ago = day_today - timedelta(days=7)
-    elif duration ==lt[2]:
+    elif duration == lt[2]:
         days_ago = day_today - timedelta(days=30)
-    elif duration ==lt[3]:
+    elif duration == lt[3]:
         days_ago = day_today - timedelta(days=365)
-    elif duration ==lt[4]:
+    elif duration == lt[4]:
         days_ago = day_today - timedelta(days=3650)
     else:
         days_ago = day_today - timedelta(days=3650)
-    start_date=days_ago
+
+    start_date = days_ago
+
     fig = make_subplots(rows=1, cols=1)
-    print(start_date,to_date, selected_companies)
+
     for i in range(len(selected_companies)):
         company = selected_companies[i]
-        executable(start_date,to_date, selected_companies[i]+".NS")
+        executable(start_date, to_date, selected_companies[i] + ".NS")
         csv_file_path = company + '.NS.csv'
         df = pandas.read_csv(csv_file_path)
         df['Date'] = pandas.to_datetime(df['Date'])
         df = df.sort_values(by='Date')
         x_column = 'Date'
         y_column = parameter
-        trace = go.Scatter(x=df[x_column], y=df[y_column], mode='lines', name=company)
+
+        # Plotting Line Graph
+        if request.form['graphType'] == 'line':
+            trace = go.Scatter(x=df[x_column], y=df[y_column], mode='lines', name=company)
+
+        # Plotting Candlestick Graph
+        elif request.form['graphType'] == 'candlestick':
+            trace = go.Candlestick(x=df[x_column],
+                                   open=df['Open'],
+                                   high=df['High'],
+                                   low=df['Low'],
+                                   close=df['Close'],
+                                   name=company)
+
         fig.add_trace(trace)
 
     fig.update_layout(title='Stock Data',
-                    xaxis_title='Date',
-                    yaxis_title=parameter,
-                    showlegend=True)
+                      xaxis_title='Date',
+                      yaxis_title=parameter,
+                      showlegend=True)
 
     html_file_path = 'templates/output_plot.html'
     fig.write_html(html_file_path)
 
     return render_template('output_plot.html')
+
 company_list = [
     "ADANIENT",
     "ADANIPORTS",
@@ -509,22 +578,7 @@ def apply_filter_to_table():
         }
     print(details)
     return render_template('filtered_company_data.html',companies=filtered_companies,details=details)
-    
-# @app.route('/get_company_details/<company_symbol>')
-# def get_company_details(company_symbol):
-#     company = yf.Ticker(company_symbol+'.NS')
-#     history = company.history(period="1d")  # Fetch daily historical data
-#     details = {
-#         'Open': history['Open'].iloc[0],
-#         'Close': history['Close'].iloc[0],
-#         'High': history['High'].iloc[0],
-#         'Low': history['Low'].iloc[0],
-#         'Average': history['Close'].mean(),
-#         'Volume': history['Volume'].iloc[0],
-#     }
 
-#     return details
-    
 
 @app.route('/company/<company_symbol>')
 def company_details(company_symbol):
@@ -545,9 +599,85 @@ def company_details(company_symbol):
         }
         return render_template('company_data.html', details=details)
 
+details={}
+for company_symbol in company_list:
+        company = yf.Ticker(company_symbol+'.NS')
+        history = company.history(period="1d")  # Fetch daily historical data
+        details[company_symbol] = {
+            'Name': company.info.get('longName', ''),
+            'Symbol': company_symbol,
+            # 'Description': company.info.get('longBusinessSummary', 'No description available.'),
+            'Industry': company.info.get('industry', 'N/A'),
+            'Sector': company.info.get('sector', 'N/A'),
+            'Close': history['Close'].iloc[0],
+        }
 
-# ... (rest of your code)
+@app.route('/submit_bank_balance',methods=['POST'])
+def transactions():
+    print("Hi625\n\n")
+    username = session.get('username')
+    user = User.query.filter_by(username=username).first()
+    amount = int(request.form['bankBalance'])
+    user.update_balance(amount)
+    
+    print(user.account_balance,user.stock_company_list)
+    bank_balance=user.account_balance
+    if  False:
+        company_stocks=[]
+    else:
+        company_stocks = [tuple(map(str, item.split(','))) for item in user.stock_company_list.split(';') if item]
+        company_stocks=company_stocks[1:]
+    company_list1={}
+    for i in range(len(company_stocks)):
+        a,b=company_stocks[i]
+        p=details[a]['Close']
+        
+        q=float(p)*float(b)
+        q=str(round(q, 3))
+        
+        company_list1[a]=[str(int(float(b))),q]
 
+    print(company_list1)
+    bank_balance1=int(bank_balance)
+    return render_template('transactions.html', companies_below=company_list, companies_above=company_list1, bank_balance=bank_balance1, details=details)
+
+
+@app.route('/transaction_update',methods=['POST'])
+def transaction_update():
+    username = session.get('username')
+    buy_value = request.form.get('buy_value')
+    if buy_value is not None:
+        buy_value=int(buy_value)
+    sell_value = request.form.get('sell_value')
+    print(sell_value)
+    if sell_value is not None:
+        sell_value=int(sell_value)		
+    company_name= request.form.get('company_symbol')
+    p=details[company_name]['Close']
+    if buy_value is not None and buy_value>0:
+        user = User.query.filter_by(username=username).first()
+        user.buy_some_stock(company_name,buy_value,p)
+# print(user.account_balance,user.stock_company_list,"hi1")
+    if sell_value is not None and sell_value>0:
+        user = User.query.filter_by(username=username).first()
+        user.sell_some_stock(company_name,sell_value,p)
+    user = User.query.filter_by(username=username).first()
+    bank_balance=user.account_balance
+    company_stocks = [tuple(map(str, item.split(','))) for item in user.stock_company_list.split(';') if item]
+    company_stocks=company_stocks[1:]
+
+    company_list1={}
+
+    for i in range(len(company_stocks)):
+        a,b=company_stocks[i]
+        r=details[a]['Close']
+        q=float(b)*float(r)
+        q=str(round(q, 3))
+        company_list1[a]=[str(int(float(b))),q]
+    print(company_list1)
+    bank_balance1=int(bank_balance)
+#   return render_template('transactions.html',companies=company_list,details=details)
+    return render_template('transactions.html', companies_below=company_list, companies_above=company_list1, bank_balance=bank_balance1, details=details)
 
 if __name__ == '__main__':
     app.run(debug=True)
